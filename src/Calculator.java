@@ -22,36 +22,56 @@ public class Calculator {
     String[] topSymbols = { "AC", "+/-", "%" };
 
     JFrame frame = new JFrame("Calculator");
+    // to create display label
     JLabel displayLabel = new JLabel();
     JPanel displayPanel = new JPanel();
     JPanel buttonsPanel = new JPanel();
 
     Calculator() {
-
+        // to set frame
         frame.setSize(bordWidth, bordHeight);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
         frame.setVisible(true);
-
+        // to set display label
         displayLabel.setBackground(customBlack);
         displayLabel.setForeground(Color.WHITE);
         displayLabel.setFont(new Font("Arial", Font.PLAIN, 80));
         displayLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         displayLabel.setText("0");
         displayLabel.setOpaque(true);
-
+        // to set display panel
         displayPanel.setLayout(new BorderLayout());
         displayPanel.add(displayLabel);
         frame.add(displayPanel, BorderLayout.NORTH);
-
+        // to set buttons panel
         buttonsPanel.setLayout(new GridLayout(5, 4));
         buttonsPanel.setBackground(customBlack);
         frame.add(buttonsPanel);
+        // to set buttons
         for (int i = 0; i < buttonValues.length; i++) {
             JButton button = new JButton();
+            String buttonvalue = buttonValues[i];
+            button.setText(buttonvalue);
+            button.setFont(new Font("Arial", Font.PLAIN, 30));
+            // to get rid of the focus border
+            button.setFocusable(false);
+            // set colors to buttons
+            if (Arrays.asList(topSymbols).contains(buttonvalue)) {
+                button.setBackground(customLightGrey);
+                button.setForeground(customBlack);
+            } else if (Arrays.asList(rightSymbols).contains(buttonvalue)) {
+                button.setBackground(customOrange);
+                button.setForeground(Color.WHITE);
 
+            } else {
+                button.setBackground(customDarkGrey);
+                button.setForeground(Color.WHITE);
+            }
+
+            buttonsPanel.add(button);
         }
     }
 
