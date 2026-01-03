@@ -27,6 +27,10 @@ public class Calculator {
     JPanel displayPanel = new JPanel();
     JPanel buttonsPanel = new JPanel();
 
+    String A = "0";
+    String operator = null;
+    String B = null;
+
     Calculator() {
         // to set frame
         frame.setSize(bordWidth, bordHeight);
@@ -34,7 +38,7 @@ public class Calculator {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
-        frame.setVisible(true);
+        // frame.setVisible(true);
         // to set display label
         displayLabel.setBackground(customBlack);
         displayLabel.setForeground(Color.WHITE);
@@ -58,12 +62,18 @@ public class Calculator {
             button.setFont(new Font("Arial", Font.PLAIN, 30));
             // to get rid of the focus border
             button.setFocusable(false);
+            button.setFocusPainted(false);
+            // button.setBorderPainted(false);
+            button.setBorder(new LineBorder(customBlack));
             // set colors to buttons
             if (Arrays.asList(topSymbols).contains(buttonvalue)) {
+                // set background color to light grey for the button
                 button.setBackground(customLightGrey);
+                // set text color to black for the text
                 button.setForeground(customBlack);
             } else if (Arrays.asList(rightSymbols).contains(buttonvalue)) {
                 button.setBackground(customOrange);
+                // set text color to white for the text
                 button.setForeground(Color.WHITE);
 
             } else {
@@ -72,7 +82,100 @@ public class Calculator {
             }
 
             buttonsPanel.add(button);
+            // add action listener to the button means make button clickable
+            button.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    // button click event
+                    JButton button = (JButton) e.getSource();
+                    // to identify which button is clicked
+                    String buttonValue = button.getText();
+                    if (Arrays.asList(rightSymbols).contains(buttonValue)) {// if the clicked button is one of the right
+                                                                            // symbols
+                        if (buttonValue == "=") {
+                            if (A != null) {
+                                B = displayLabel.getText();
+                                double numA = Double.parseDouble(A);
+                                double numB = Double.parseDouble(B);
+                                if (operator == "+") {
+                                    displayLabel.setText(removeZeroDecimal(numA + numB));
+                                } else if (operator == "-") {
+                                    displayLabel.setText(removeZeroDecimal(numA - numB));
+                                } else if (operator == "×") {
+                                    displayLabel.setText(removeZeroDecimal(numA * numB));
+                                } else if (operator == "÷") {
+                                    displayLabel.setText(removeZeroDecimal(numA / numB));
+                                }
+                                clearAll();
+                            }
+
+                        } else if ("+-×÷".contains(buttonValue)) {
+                            if (operator == null) {
+                                A = displayLabel.getText();
+                                displayLabel.setText("0");
+                                B = "0";
+                            }
+                            operator = buttonValue;
+                        }
+                    } else if (Arrays.asList(topSymbols).contains(buttonValue)) {// if the clicked button is one of the
+                                                                                 // top symbols
+                        if (buttonValue == "AC") {
+                            clearAll();
+                            displayLabel.setText("0");
+
+                        } else if (buttonValue == "+/-") {
+                            // convert the display label text to double
+                            double numDisplay = Double.parseDouble(displayLabel.getText());
+                            numDisplay *= -1;
+                            displayLabel.setText(removeZeroDecimal(numDisplay));// remove .0 if the number is integer
+                                                                                // using
+                                                                                // removeZeroDecimal function
+
+                        } else if (buttonValue == "%") {
+                            double numDisplay = Double.parseDouble(displayLabel.getText());
+                            numDisplay /= 100;
+                            displayLabel.setText(removeZeroDecimal(numDisplay));
+                        }
+                        // reset everything
+
+                    } else { // if the clicked button is one of the number buttons
+                        if (buttonValue == ".") {
+                            if (!displayLabel.getText().contains(".")) {
+                                displayLabel.setText(displayLabel.getText() + buttonValue);
+                            }
+                        } else if ("1234567890".contains(buttonValue)) {
+                            if (displayLabel.getText() == "0") {
+                                // if the display label is 0 then replace it with the clicked number
+                                displayLabel.setText(buttonValue);
+                            } else {
+                                // append the clicked number to the display label
+                                displayLabel.setText(displayLabel.getText() + buttonValue);
+                            }
+                        }
+
+                    }
+
+                }
+            });
+            // placing the frame.setVisible(true); make the system render it properly
+            frame.setVisible(true);
         }
+    }
+
+    void clearAll() {
+        A = "0";
+        operator = null;
+        B = null;
+    }
+
+    // to remove .0 from double if the number is integer
+    String removeZeroDecimal(double num) {
+        if (num % 1 == 0) {
+            // convert to integer to remove the .0 value and return string
+            return Integer.toString((int) num);
+        }
+        // if its not whole number remove resend it as string
+        return Double.toString(num);
+
     }
 
 }
