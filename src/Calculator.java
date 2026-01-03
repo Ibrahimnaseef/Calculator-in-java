@@ -30,6 +30,7 @@ public class Calculator {
     String A = "0";
     String operator = null;
     String B = null;
+    String numC;
 
     Calculator() {
         // to set frame
@@ -104,6 +105,8 @@ public class Calculator {
                                     displayLabel.setText(removeZeroDecimal(numA * numB));
                                 } else if (operator == "÷") {
                                     displayLabel.setText(removeZeroDecimal(numA / numB));
+                                } else if (operator == "%") {
+                                    displayLabel.setText(removeZeroDecimal(numA % numB));
                                 }
                                 clearAll();
                             }
@@ -131,9 +134,15 @@ public class Calculator {
                                                                                 // removeZeroDecimal function
 
                         } else if (buttonValue == "%") {
-                            double numDisplay = Double.parseDouble(displayLabel.getText());
-                            numDisplay /= 100;
-                            displayLabel.setText(removeZeroDecimal(numDisplay));
+                            // double numDisplay = Double.parseDouble(displayLabel.getText());
+                            // numDisplay /= 100;
+                            // displayLabel.setText(removeZeroDecimal(numDisplay));
+                            if (operator == null) {
+                                A = displayLabel.getText();
+                                displayLabel.setText("0");
+                                B = "0";
+                            }
+                            operator = buttonValue;
                         }
                         // reset everything
 
@@ -149,6 +158,12 @@ public class Calculator {
                             } else {
                                 // append the clicked number to the display label
                                 displayLabel.setText(displayLabel.getText() + buttonValue);
+                            }
+                        } else if (buttonValue == "√") {
+                            if (displayLabel.getText() != "0") {
+                                double numDisplay = Double.parseDouble(displayLabel.getText());
+                                numDisplay = Math.sqrt(numDisplay);
+                                displayLabel.setText(removeZeroDecimal(numDisplay));
                             }
                         }
 
@@ -169,12 +184,14 @@ public class Calculator {
 
     // to remove .0 from double if the number is integer
     String removeZeroDecimal(double num) {
+
         if (num % 1 == 0) {
             // convert to integer to remove the .0 value and return string
             return Integer.toString((int) num);
         }
         // if its not whole number remove resend it as string
-        return Double.toString(num);
+        numC = Double.toString(num);
+        return String.format("%.3f", num);
 
     }
 
