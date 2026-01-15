@@ -16,23 +16,26 @@ public class Calculator {
             "7", "8", "9", "×",
             "4", "5", "6", "-",
             "1", "2", "3", "+",
-            "0", ".", "√", "="
+            "0", ".", "more", "="
     };
     String[] rightSymbols = { "÷", "×", "-", "+", "=" };
     String[] topSymbols = { "AC", "+/-", "%" };
 
     JFrame frame = new JFrame("Calculator");
+
     // to create display label
     JLabel displayLabel = new JLabel();
     JPanel displayPanel = new JPanel();
     JPanel buttonsPanel = new JPanel();
+    CardLayout cardLayout = new CardLayout();
+    JPanel container = new JPanel(cardLayout);
 
     String A = "0";
     String operator = null;
     String B = null;
     String numC;
 
-    Calculator() {
+    public Calculator() {
         // to set frame
         frame.setSize(bordWidth, bordHeight);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,7 +57,16 @@ public class Calculator {
         // to set buttons panel
         buttonsPanel.setLayout(new GridLayout(5, 4));
         buttonsPanel.setBackground(customBlack);
-        frame.add(buttonsPanel);
+        // previous one
+        // frame.add(buttonsPanel);
+        // card layout container
+
+        container.add(buttonsPanel, "Basic");
+        container.add(new NextPage(this), "MORE");
+
+        frame.add(container, BorderLayout.CENTER);
+
+        // container.add(new NextPage(this), "more");
         // to set buttons
         for (int i = 0; i < buttonValues.length; i++) {
             JButton button = new JButton();
@@ -152,19 +164,26 @@ public class Calculator {
                                 displayLabel.setText(displayLabel.getText() + buttonValue);
                             }
                         } else if ("1234567890".contains(buttonValue)) {
-                            if (displayLabel.getText() == "0") {
+                            if (displayLabel.getText().equals("0")) {
                                 // if the display label is 0 then replace it with the clicked number
                                 displayLabel.setText(buttonValue);
                             } else {
                                 // append the clicked number to the display label
                                 displayLabel.setText(displayLabel.getText() + buttonValue);
                             }
-                        } else if (buttonValue == "√") {
-                            if (displayLabel.getText() != "0") {
-                                double numDisplay = Double.parseDouble(displayLabel.getText());
-                                numDisplay = Math.sqrt(numDisplay);
-                                displayLabel.setText(removeZeroDecimal(numDisplay));
-                            }
+                        } else if (buttonValue.equals("more")) {
+                            showPage("MORE");
+
+                            // Point p = frame.getLocation();
+                            // new NextPage(p);
+                            // frame.dispose();
+
+                            // added the sqrt function
+                            // if (displayLabel.getText() != "0") {
+                            // double numDisplay = Double.parseDouble(displayLabel.getText());
+                            // numDisplay = Math.sqrt(numDisplay);
+                            // displayLabel.setText(removeZeroDecimal(numDisplay));
+                            // }
                         }
 
                     }
@@ -172,8 +191,14 @@ public class Calculator {
                 }
             });
             // placing the frame.setVisible(true); make the system render it properly
-            frame.setVisible(true);
+
         }
+        frame.setVisible(true);
+
+    }
+
+    public void showPage(String name) {
+        cardLayout.show(container, name);
     }
 
     void clearAll() {
