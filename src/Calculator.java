@@ -46,7 +46,7 @@ public class Calculator {
         // to set display label
         displayLabel.setBackground(customBlack);
         displayLabel.setForeground(Color.WHITE);
-        displayLabel.setFont(new Font("Arial", Font.PLAIN, 80));
+        displayLabel.setFont(new Font("Arial", Font.PLAIN, 50));
         displayLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         displayLabel.setText("0");
         displayLabel.setOpaque(true);
@@ -104,7 +104,7 @@ public class Calculator {
                     String buttonValue = button.getText();
                     if (Arrays.asList(rightSymbols).contains(buttonValue)) {// if the clicked button is one of the right
                                                                             // symbols
-                        if (buttonValue == "=") {
+                        if (buttonValue.equals("=")) {
                             if (A != null) {
                                 B = displayLabel.getText();
                                 double numA = Double.parseDouble(A);
@@ -133,11 +133,11 @@ public class Calculator {
                         }
                     } else if (Arrays.asList(topSymbols).contains(buttonValue)) {// if the clicked button is one of the
                                                                                  // top symbols
-                        if (buttonValue == "AC") {
+                        if (buttonValue.equals("AC")) {
                             clearAll();
                             displayLabel.setText("0");
 
-                        } else if (buttonValue == "+/-") {
+                        } else if (buttonValue.equals("+/-")) {
                             // convert the display label text to double
                             double numDisplay = Double.parseDouble(displayLabel.getText());
                             numDisplay *= -1;
@@ -145,7 +145,7 @@ public class Calculator {
                                                                                 // using
                                                                                 // removeZeroDecimal function
 
-                        } else if (buttonValue == "%") {
+                        } else if (buttonValue.equals("%")) {
                             // double numDisplay = Double.parseDouble(displayLabel.getText());
                             // numDisplay /= 100;
                             // displayLabel.setText(removeZeroDecimal(numDisplay));
@@ -159,7 +159,7 @@ public class Calculator {
                         // reset everything
 
                     } else { // if the clicked button is one of the number buttons
-                        if (buttonValue == ".") {
+                        if (buttonValue.equals(".")) {
                             if (!displayLabel.getText().contains(".")) {
                                 displayLabel.setText(displayLabel.getText() + buttonValue);
                             }
@@ -196,6 +196,13 @@ public class Calculator {
         frame.setVisible(true);
 
     }
+    public String getDisplay(){
+        return displayLabel.getText();
+    }
+    public void setDisplay(String Value){
+        displayLabel.setText(Value);
+    }
+
 
     public void showPage(String name) {
         cardLayout.show(container, name);
@@ -219,5 +226,25 @@ public class Calculator {
         return String.format("%.3f", num);
 
     }
+    public String getA(){
+        return A;
+    }
+    public void setA(String value){
+        A=value;
+    }
+    public String getB(){
+        return B;
+    }
+    public void setB(String value) {
+    B = value;
+    }
+    public String getOperator(){
+        return operator;
+
+    }
+    public void setOperator(String op){
+        operator=op;
+    }
+
 
 }
