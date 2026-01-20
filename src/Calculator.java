@@ -16,7 +16,7 @@ public class Calculator {
             "7", "8", "9", "×",
             "4", "5", "6", "-",
             "1", "2", "3", "+",
-            "0", ".", "more", "="
+            "0", ".", "More", "="
     };
     String[] rightSymbols = { "÷", "×", "-", "+", "=" };
     String[] topSymbols = { "AC", "+/-", "%" };
@@ -102,6 +102,9 @@ public class Calculator {
                     JButton button = (JButton) e.getSource();
                     // to identify which button is clicked
                     String buttonValue = button.getText();
+                    if(displayLabel.getText().equals("NaN")){
+                                displayLabel.setText("0");
+                    }
                     if (Arrays.asList(rightSymbols).contains(buttonValue)) {// if the clicked button is one of the right
                                                                             // symbols
                         if (buttonValue.equals("=")) {
@@ -164,6 +167,9 @@ public class Calculator {
                                 displayLabel.setText(displayLabel.getText() + buttonValue);
                             }
                         } else if ("1234567890".contains(buttonValue)) {
+                            if(displayLabel.getText().equals("NaN")){
+                                displayLabel.setText("0");
+                            }
                             if (displayLabel.getText().equals("0")) {
                                 // if the display label is 0 then replace it with the clicked number
                                 displayLabel.setText(buttonValue);
@@ -171,7 +177,7 @@ public class Calculator {
                                 // append the clicked number to the display label
                                 displayLabel.setText(displayLabel.getText() + buttonValue);
                             }
-                        } else if (buttonValue.equals("more")) {
+                        } else if (buttonValue.equals("More")) {
                             showPage("MORE");
 
                             // Point p = frame.getLocation();
